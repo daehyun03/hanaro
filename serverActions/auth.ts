@@ -1,22 +1,24 @@
-'use server'
-import { auth, signIn, signOut } from '@/app/lib/auth'
+'use server';
+import { auth, signIn, signOut } from '@/lib/auth';
 
-export const signInWithCredentials = async (formData: FormData) => {
-	await signIn('credentials', {
-		nickname: formData.get('nickname') || '',
-		email: formData.get('email') || '',
-		password: formData.get('password') || '',
-		redirectTo: '/signin'
-	})
+export async function signInWithCredentials(formData: FormData) {
+	try {
+		await signIn('credentials', {
+			email: formData.get('email') || '',
+			password: formData.get('password') || '',
+			redirectTo: '/',
+		});
+	} catch (error) {
+		throw error;
+	}
 }
 export const signInWithGitHub = async () => {
-	await signIn('github', { /* 옵션 */ })
-	// ...
-}
-export const signOutWithForm = async (formData: FormData) => {
-	await signOut()
-}
+	await signIn('github', { redirectTo: '/' });
+};
+export const signOutWithForm = async () => {
+	await signOut();
+};
 export const getSession = async () => {
-	const session = await auth()
-	return session
-}
+	const session = await auth();
+	return session;
+};
