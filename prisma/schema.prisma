@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model post {
+  post_id   Int         @id @default(autoincrement())
+  tag_id    Int
+  title     String      @db.VarChar(50)
+  text      String      @db.Text
+  time      DateTime    @db.DateTime(0)
+  tag       tag         @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_tag_TO_post_1")
+  post_like post_like[]
+
+  @@index([tag_id], map: "FK_tag_TO_post_1")
+  @@fulltext([title, text], map: "ft_title_text")
+}
+
+model post_like {
+  like_id Int  @id @default(autoincrement())
+  post_id Int
+  user_id Int
+  like    Int?
+  post    post @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_post_TO_like_1")
+  user    user @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_like_1")
+
+  @@index([post_id], map: "FK_post_TO_like_1")
+  @@index([user_id], map: "FK_user_TO_like_1")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model stopword {
+  value String @db.VarChar(31)
+
+  @@ignore
+}
+
+model tag {
+  tag_id Int    @id @default(autoincrement())
+  name   String @db.VarChar(50)
+  post   post[]
+}
+
+model user {
+  user_id   Int         @id @default(autoincrement())
+  email     String      @db.VarChar(100)
+  nickname  String      @db.VarChar(50)
+  pw        String      @db.VarChar(100)
+  auth      Int
+  post_like post_like[]
+}
