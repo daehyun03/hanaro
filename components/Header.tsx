@@ -1,26 +1,47 @@
-import Link from 'next/link'
-import { getSession, signOutWithForm } from '@/serverActions/auth';
+'use client';
 
-export default async function Header() {
-	const session = await getSession();
+import Link from 'next/link';
+import { signOutWithForm } from '@/serverActions/auth';
+import Logo from '@/components/Logo';
+import { useSession } from 'next-auth/react';
+import { usePathname } from 'next/navigation';
+
+export default function Header() {
+	const { data: session } = useSession();
+	const pathname = usePathname();
+
+	const hideTabRoutes = ['/signup', '/signin'];
+	const shouldHide = hideTabRoutes.includes(pathname);
+
+	if (shouldHide) return <></>;
+
 	return (
-		<header>
-			{session?.user && <div>{session.user.name}</div>}
-			<nav style={{ display: 'flex', gap: '10px' }}>
-				<Link href="/">메인</Link>
-				{session?.user ? (
-					<>
-						<form action={signOutWithForm}>
-							<button type="submit">로그아웃</button>
-						</form>
-					</>
-				) : (
-					<>
-						<Link href="/signin">로그인</Link>
-						<Link href="/signup">회원가입</Link>
-					</>
-				)}
+		<header className="fixed top-0 h-16 py-4 px-4 z-0 w-full max-w-[1024px] border-b border-gray-200">
+			<nav className="flex justify-between items-center">
+				<div>back</div>
+				<Logo></Logo>
+				<div className="flex flex-raw gap-2 items-center">
+					{session?.user ? (
+						<div className="flex flex-raw gap-4 items-center">
+							<Link href="/my" className="underline">{session.user.name}</Link>
+							<form action={signOutWithForm}>
+								<button type="submit" className="underline">
+									로그아웃
+								</button>
+							</form>
+						</div>
+					) : (
+						<div className="flex flex-raw gap-4 items-center">
+							<Link href="/signin" className="underline">
+								로그인
+							</Link>
+							<Link href="/signup" className="underline">
+								회원가입
+							</Link>
+						</div>
+					)}
+				</div>
 			</nav>
 		</header>
-	)
+	);
 }

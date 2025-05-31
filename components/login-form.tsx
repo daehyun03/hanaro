@@ -12,7 +12,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { signInWithCredentials, signInWithGitHub } from '@/serverActions/auth';
-import { AuthError } from 'next-auth';
 
 export function LoginForm({
 	className,
@@ -26,9 +25,10 @@ export function LoginForm({
 		}
 		try {
 			await signInWithCredentials(formData);
+			window.location.href = '/';
 		} catch (error) {
-			if (error instanceof AuthError) {
-				alert(error.message);
+			if (error instanceof Error) {
+				alert("로그인에 실패했습니다.");
 			}
 		}
 	};

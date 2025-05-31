@@ -10,17 +10,17 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 			authorize: async (credentials) => {
 				const { email, password } = credentials;
 				if (!email || !password) {
-					throw new Error('이메일과 비밀번호를 입력해주세요')
+					return null
 				}
 
 				const userInDB = await prisma.user.findFirst({
 					where: {email: email as string},
 				});
 				if (!userInDB){
-					throw new Error('존재하지 않는 사용자입니다.')
+					return null
 				}
 				if (userInDB.pw !== password){
-					throw new Error('비밀번호가 일치하지 않습니다.')
+					return null
 				}
 				return {
 					id: String(userInDB.user_id),
