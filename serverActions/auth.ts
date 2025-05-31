@@ -19,6 +19,5 @@ export const signOutWithForm = async () => {
 	await signOut();
 };
 export const getSession = async () => {
-	const session = await auth();
-	return session;
+	return await auth();
 };
