@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { signOutWithForm } from '@/serverActions/auth';
-import { router } from 'next/client';
+import { useRouter } from 'next/navigation';
 
 type FormState = {
 	password: string;
@@ -25,6 +25,7 @@ export default function MyInfo({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
+	const router = useRouter();
 	const { data: session } = useSession();
 	const [form, setForm] = useState<FormState>({
 		password: '',
@@ -64,6 +65,22 @@ export default function MyInfo({
 			alert('비밀번호 변경에 실패했습니다. 다시 시도해주세요.');
 		}
 	};
+
+	const handleWithdraw = async () => {
+		if (confirm('정말로 회원 탈퇴를 하시겠습니까?')) {
+			const res = await fetch('/api/user/withdraw', {
+				method: 'DELETE',
+			});
+			if (res.ok) {
+				alert('회원 탈퇴가 완료되었습니다.');
+				await signOutWithForm();
+				router.refresh();
+			} else {
+				alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
+			}
+		}
+	};
+
 	return (
 		<div className={cn('flex flex-col gap-6', className)} {...props}>
 			<Card>
@@ -157,7 +174,7 @@ export default function MyInfo({
 						</div>
 					</div>
 
-					<Button className="w-full mt-6">Withdraw</Button>
+					<Button className="w-full mt-6" onClick={handleWithdraw}>Withdraw</Button>
 				</CardContent>
 			</Card>
 		</div>

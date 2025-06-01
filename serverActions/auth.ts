@@ -12,7 +12,7 @@ export const signInWithGitHub = async () => {
 	await signIn('github', { redirectTo: '/' });
 };
 export const signOutWithForm = async () => {
-	await signOut();
+	await signOut({redirectTo: '/' });
 };
 export const getSession = async () => {
 	return await auth();
