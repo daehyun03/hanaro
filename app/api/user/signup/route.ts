@@ -5,7 +5,6 @@ export async function POST(req: NextRequest) {
 	try {
 		const body = await req.json();
 		const { email, password, nickname } = body;
-		console.log(body);
 		if (!email || !password || !nickname) {
 			return NextResponse.json(
 				{ message: 'Missing required fields.' },
