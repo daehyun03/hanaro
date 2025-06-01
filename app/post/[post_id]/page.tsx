@@ -3,6 +3,13 @@
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { AllPost } from '@/types/type';
+import {
+	Card,
+	CardContent,
+	CardDescription,
+	CardHeader,
+} from '@/components/ui/card';
+import { printDate } from '@/app/utils/printDate';
 
 export default function PostPage() {
 	const params = useParams();
@@ -17,7 +24,7 @@ export default function PostPage() {
 			if (res.ok) {
 				const data = await res.json();
 				setPost(data);
-				console.log(data)
+				console.log(data);
 			}
 		};
 
@@ -27,10 +34,24 @@ export default function PostPage() {
 	if (!post) return <div className="p-6 pt-20">Loading...</div>;
 	return (
 		<div className="pt-20 p-6 flex justify-between">
-			<h1 className="text-3xl font-bold mb-4">{post.title}</h1>
-			<p className="text-sm text-gray-500 mb-2">Tag: {post.tag.name}</p>
-			<p className="text-sm text-gray-400 mb-6">작성일: {post.time}</p>
-			<div className="text-lg whitespace-pre-wrap">{post.text}</div>
+			<Card className="flex-1">
+				<CardHeader>
+					<div className="text-2xl font-bold">{post.title}</div>
+					<CardDescription>
+							# {post.tag.name}
+						<div>작성일: {printDate(post.time)}</div>
+						{printDate(post.modified_date) !==
+						'1970년 01월 01일' ? (
+							<div>수정일: {printDate(post.modified_date)}</div>
+						) : (
+							<></>
+						)}
+					</CardDescription>
+				</CardHeader>
+				<CardContent>
+					<p>{post.text}</p>
+				</CardContent>
+			</Card>
 		</div>
 	);
 }
