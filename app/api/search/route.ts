@@ -10,15 +10,27 @@ export async function GET(req: NextRequest) {
 			status: 400,
 		});
 	}
-
+	console.log(q)
 	try {
-		const posts = await prisma.$queryRawUnsafe(`
-      SELECT p.post_id, p.title, p.time, t.name AS tagName
-      FROM post p
-      JOIN tag t ON p.tag_id = t.tag_id
-      WHERE MATCH(p.title, p.text) AGAINST (${prisma.escape(q)} IN NATURAL LANGUAGE MODE)
-      ORDER BY p.time DESC
-    `);
+		const posts = await prisma.post.findMany({
+			where: {
+				OR: [{ title: { search: String(q) } }, { text: { search: String(q) } }],
+			},
+			select: {
+				post_id: true,
+				title: true,
+				time: true,
+				text: true,
+				tag: {
+					select: {
+						name: true,
+					},
+				},
+			},
+			orderBy: {
+				time: 'desc',
+			},
+		});
 
 		return new Response(JSON.stringify(posts), {
 			status: 200,
