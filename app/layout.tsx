@@ -4,6 +4,7 @@ import './globals.css';
 import Header from '@/components/Header';
 import { SessionProvider } from 'next-auth/react';
 import { auth } from '@/lib/auth';
+import SyncSessionToZustand from '@/app/utils/SyncSessionZustand';
 
 const geistSans = Geist({
 	variable: '--font-geist-sans',
@@ -33,8 +34,10 @@ export default async function RootLayout({
 				className={`${geistSans.variable} ${geistMono.variable} max-w-[1024px] mx-auto h-screen`}
 			>
 				<SessionProvider session={session}>
-					<Header />
-					{children}
+					<SyncSessionToZustand>
+						<Header />
+						{children}
+					</SyncSessionToZustand>
 				</SessionProvider>
 			</body>
 		</html>

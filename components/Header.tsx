@@ -3,13 +3,13 @@
 import Link from 'next/link';
 import { signOutWithForm } from '@/serverActions/auth';
 import Logo from '@/components/Logo';
-import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
 import ArrowBackIcon from '@/asset/arrow_back';
+import { useSessionStore } from '@/app/store';
 
 export default function Header() {
-	const { data: session } = useSession();
 	const pathname = usePathname();
+	const user = useSessionStore((s) => s.user);
 
 	const hideTabRoutes = ['/signup', '/signin', '/search'];
 	const shouldHide = hideTabRoutes.includes(pathname);
@@ -31,10 +31,10 @@ export default function Header() {
 				</div>
 				<Logo></Logo>
 				<div className="flex flex-raw gap-2 items-center">
-					{session?.user ? (
+					{user ? (
 						<div className="flex flex-raw gap-4 items-center">
 							<Link href="/my" className="underline">
-								{session.user.name}
+								{user.name}
 							</Link>
 							<form action={signOutWithForm}>
 								<button type="submit" className="underline">

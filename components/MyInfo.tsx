@@ -14,7 +14,7 @@ import { Button } from '@/components/ui/button';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { signOutWithForm } from '@/serverActions/auth';
-import { useRouter } from 'next/navigation';
+import { useSessionStore } from '@/app/store';
 
 type FormState = {
 	password: string;
@@ -25,8 +25,9 @@ export default function MyInfo({
 	className,
 	...props
 }: React.ComponentProps<'div'>) {
-	const router = useRouter();
 	const { data: session } = useSession();
+	const clearUser = useSessionStore((state) => state.clearUser);
+
 	const [form, setForm] = useState<FormState>({
 		password: '',
 		passwordConfirm: '',
@@ -72,9 +73,9 @@ export default function MyInfo({
 				method: 'DELETE',
 			});
 			if (res.ok) {
+				clearUser();
 				alert('회원 탈퇴가 완료되었습니다.');
 				await signOutWithForm();
-				router.refresh();
 			} else {
 				alert('회원 탈퇴에 실패했습니다. 다시 시도해주세요.');
 			}
