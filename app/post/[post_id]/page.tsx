@@ -24,7 +24,6 @@ export default function PostPage() {
 			if (res.ok) {
 				const data = await res.json();
 				setPost(data);
-				console.log(data);
 			}
 		};
 
