@@ -4,6 +4,7 @@ import Tags from '@/components/Tags';
 import { useState } from 'react';
 import Posts from '@/components/Posts';
 import Link from 'next/link';
+import SearchIcon from '@/asset/search';
 
 export default function Home() {
 	const [checked, setChecked] = useState<string>('Home');
@@ -14,7 +15,7 @@ export default function Home() {
 					<div className="mb-4 text-3xl flex items-center justify-between font-bold">
 						{checked}
 					</div>
-					<Link href="/search">search</Link>
+					<Link href="/search"><SearchIcon/></Link>
 				</div>
 				<Posts selected={checked} />
 			</div>

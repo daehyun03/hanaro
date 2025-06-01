@@ -3,12 +3,18 @@
 import Logo from '@/components/Logo';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
+import { ShowPost } from '@/types/type';
+import PostCard from '@/components/PostCard';
+import SearchIcon from '@/asset/search';
 
 export default function SearchPage() {
 	const [search, setSearch] = useState('');
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const [posts, setPosts] = useState<ShowPost[]>([]);
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log('검색어:', search);
+		const res = await fetch(`/api/search?q=${search}`);
+		const posts = await res.json();
+		setPosts(posts);
 	};
 	const onBackButtonClick = () => {
 		window.history.back();
@@ -37,9 +43,20 @@ export default function SearchPage() {
 					type="submit"
 					className="px-4 py-2 rounded-md bg-black text-white hover:bg-gray-800"
 				>
-					Search
+					<SearchIcon/>
 				</button>
 			</form>
+			<div>
+				{posts.length > 0 ? (
+					<div className="mt-4 flex flex-col gap-4">
+						{posts.map((post) => (
+							<PostCard key={post.post_id} post={post}/>
+						))}
+					</div>
+				) : (
+					<p className="mt-4 text-gray-500">검색 결과가 없습니다.</p>
+				)}
+			</div>
 		</div>
 	);
 }
