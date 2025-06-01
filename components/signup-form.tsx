@@ -43,15 +43,11 @@ export function SignupForm({
 			return;
 		}
 
-		const passwordRegex =
-			/^(?=.*[A-Za-z])(?=.*\d)(?=.*[!@#$%^&*()_\-+=\[\]{};':"\\|,.<>/?]).{10,}$/;
-
-		if (!passwordRegex.test(form.password)) {
-			alert(
-				'비밀번호는 10자 이상이며, 영문/숫자/특수기호를 모두 포함해야 합니다.',
-			);
+		if (form.password.length < 6) {
+			alert('비밀번호는 6자 이상으로 작성해 주세요.');
 			return;
 		}
+
 		try {
 			const res = await fetch('/api/user/signup', {
 				method: 'POST',
