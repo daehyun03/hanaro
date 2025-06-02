@@ -26,3 +26,10 @@ type AllPost = {
 		name: string;
 	};
 };
+
+export type User = {
+	user_id: number;
+	email: string;
+	nickname: string;
+	role: 'admin' | 'user';
+};
