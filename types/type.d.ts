@@ -16,7 +16,7 @@ export type ShowPost = {
 	};
 }
 
-type AllPost = {
+export type AllPost = {
 	post_id: number;
 	title: string;
 	text: string;
@@ -33,3 +33,12 @@ export type User = {
 	nickname: string;
 	role: 'admin' | 'user';
 };
+
+export type ShortPost = {
+	post_id: number;
+	title: string;
+	like_count: number;
+	tag: {
+		name: string;
+	};
+}

@@ -80,7 +80,7 @@ export default function PostPage() {
 					</CardDescription>
 				</CardHeader>
 				<CardContent>
-					<p>{post.text}</p>
+					<p className="whitespace-pre-wrap">{post.text}</p>
 					<LikeButtons postId={Number(postId)} />
 				</CardContent>
 			</Card>

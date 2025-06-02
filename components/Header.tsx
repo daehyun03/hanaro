@@ -6,7 +6,6 @@ import Logo from '@/components/Logo';
 import { usePathname } from 'next/navigation';
 import ArrowBackIcon from '@/asset/arrow_back';
 import { useSessionStore } from '@/app/store';
-
 export default function Header() {
 	const pathname = usePathname();
 	const user = useSessionStore((s) => s.user);
@@ -34,7 +33,7 @@ export default function Header() {
 					{user ? (
 						<div className="flex flex-raw gap-4 items-center">
 							<Link href="/my" className="underline">
-								{user.name}
+								마이페이지
 							</Link>
 							<form action={signOutWithForm}>
 								<button type="submit" className="underline">

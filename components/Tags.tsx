@@ -20,7 +20,7 @@ export default function Tags({ checked, setChecked }: TagsProps) {
 	}, []);
 	return (
 		<div>
-			<div className="pb-4">Tag</div>
+			<div className="pb-4"># Tag</div>
 			<div className="flex flex-wrap gap-2">
 				{tags.map((tag) => (
 					<button
