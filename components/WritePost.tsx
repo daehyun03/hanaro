@@ -36,15 +36,29 @@ export default function () {
 			tag: selectedTag,
 		};
 		try {
-			const res = await fetch('/api/admin/write', {
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify(payload),
-			});
+			let res: Response;
+			if(postId) {
+				res = await fetch(`/api/admin/write?postId=${postId}`, {
+					method: 'PUT',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload),
+				});
+			} else {
+				res = await fetch('/api/admin/write', {
+					method: 'POST',
+					headers: { 'Content-Type': 'application/json' },
+					body: JSON.stringify(payload),
+				});
+			}
+
 			if (!res.ok) {
 				alert('글 등록에 실패했습니다.');
 			} else {
-				alert('등록 완료');
+				if(postId) {
+					alert('글이 수정되었습니다.');
+				} else {
+					alert('글이 작성되었습니다.');
+				}
 				window.location.href = '/';
 			}
 		} catch (error) {
