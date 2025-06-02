@@ -57,6 +57,30 @@ export default function Admin() {
 	return (
 		<div>
 			<div>
+				<div className="font-bold text-xl mb-4">Delete Tag</div>
+				<RadioGroup
+					className="flex flex-wrap"
+					value={String(selectedTag)}
+					onValueChange={(value) => setSelectedTag(Number(value))}
+				>
+					{tags.map((tag) => (
+						<div
+							key={tag.tag_id}
+							className="flex items-center space-x-2"
+						>
+							<RadioGroupItem
+								value={String(tag.tag_id)}
+								id={String(tag.tag_id)}
+							/>
+							<Label htmlFor={tag.name}>{tag.name}</Label>
+						</div>
+					))}
+				</RadioGroup>
+				<Button type="button" className="my-4" onClick={delTag}>
+					Delete Tag
+				</Button>
+			</div>
+			<div>
 				<div className="font-bold text-xl mb-4">Search User</div>
 				<div className="flex gap-2 items-center">
 					<Input
@@ -100,30 +124,6 @@ export default function Admin() {
 							))}
 					</TableBody>
 				</Table>
-			</div>
-			<div className="mt-8">
-				<div className="font-bold text-xl mb-4">Delete Tag</div>
-				<RadioGroup
-					className="flex"
-					value={String(selectedTag)}
-					onValueChange={(value) => setSelectedTag(Number(value))}
-				>
-					{tags.map((tag) => (
-						<div
-							key={tag.tag_id}
-							className="flex items-center space-x-2"
-						>
-							<RadioGroupItem
-								value={String(tag.tag_id)}
-								id={String(tag.tag_id)}
-							/>
-							<Label htmlFor={tag.name}>{tag.name}</Label>
-						</div>
-					))}
-				</RadioGroup>
-				<Button type="button" className="mt-4" onClick={delTag}>
-					Delete Tag
-				</Button>
 			</div>
 		</div>
 	);
