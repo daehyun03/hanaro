@@ -42,7 +42,7 @@ model stopword {
 
 model tag {
   tag_id Int    @id @default(autoincrement())
-  name   String @db.VarChar(50)
+  name   String @unique @db.VarChar(50)
   post   post[]
 }
 
