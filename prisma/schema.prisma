@@ -8,14 +8,14 @@ datasource db {
 }
 
 model post {
-  post_id   Int         @id @default(autoincrement())
-  tag_id    Int
-  title     String      @db.VarChar(50)
-  text      String      @db.Text
-  time      DateTime    @db.DateTime(0)
-  modified_date DateTime @db.DateTime(0)
-  tag       tag         @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_tag_TO_post_1")
-  post_like post_like[]
+  post_id       Int         @id @default(autoincrement())
+  tag_id        Int
+  title         String      @db.VarChar(50)
+  text          String      @db.Text
+  time          DateTime    @db.DateTime(0)
+  modified_date DateTime    @db.DateTime(0)
+  tag           tag         @relation(fields: [tag_id], references: [tag_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_tag_TO_post_1")
+  post_like     post_like[]
 
   @@index([tag_id], map: "FK_tag_TO_post_1")
   @@fulltext([title, text], map: "ft_title_text")
