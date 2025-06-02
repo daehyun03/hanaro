@@ -3,31 +3,56 @@ import GitHub from '@auth/core/providers/github';
 import Credentials from '@auth/core/providers/credentials';
 import { prisma } from '@/app/utils/prismaClients';
 
+declare module 'next-auth' {
+	interface User {
+		role: string;
+	}
+	interface Session {
+		role: string;
+	}
+}
+declare module '@auth/core/jwt' {
+	interface JWT {
+		role: string;
+	}
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
 	providers: [
-		GitHub,
+		GitHub({
+			profile(profile) {
+				return {
+					id: String(profile.id),
+					email: profile.email ?? '',
+					name: profile.login ?? '',
+					image: profile.avatar_url ?? '',
+					role: 'user',
+				};
+			},
+		}),
 		Credentials({
 			authorize: async (credentials) => {
 				const { email, password } = credentials;
 				if (!email || !password) {
-					return null
+					return null;
 				}
 
 				const userInDB = await prisma.user.findFirst({
-					where: {email: email as string},
+					where: { email: email as string },
 				});
-				if (!userInDB){
-					return null
+				if (!userInDB) {
+					return null;
 				}
-				if (userInDB.pw !== password){
-					return null
+				if (userInDB.pw !== password) {
+					return null;
 				}
 				return {
 					id: String(userInDB.user_id),
 					email: email as string,
+					emailVerified: null,
 					name: userInDB.nickname,
-					auth: userInDB.auth
-				}
+					role: userInDB.role,
+				};
 			},
 		}),
 	],
@@ -48,9 +73,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 						await prisma.user.create({
 							data: {
 								email,
-								nickname: profile.login as string ?? 'github_user',
+								nickname:
+									(profile.login as string) ?? 'github_user',
 								pw: '', // 소셜 로그인이라 pw는 공백으로 둠
-								auth: 0,
+								role: 'user',
 							},
 						});
 					}
@@ -60,13 +86,13 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		},
 		jwt: async ({ token, user }) => {
 			if (user) {
-				token.user = user;
+				token.role = user.role;
 			}
 			return token;
 		},
 		session({ session, token }) {
-			console.log(session)
-			console.log('token', token);
+			session.user.role = token.role;
+			console.log('Session:', session.user);
 			return session;
 		},
 		redirect: async ({ url, baseUrl }) => {

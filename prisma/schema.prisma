@@ -48,9 +48,9 @@ model tag {
 
 model user {
   user_id   Int         @id @default(autoincrement())
-  email     String      @db.VarChar(100) @unique
+  email     String      @unique @db.VarChar(100)
   nickname  String      @db.VarChar(50)
   pw        String      @db.VarChar(100)
-  auth      Int
+  role      String      @db.VarChar(20)
   post_like post_like[]
 }
