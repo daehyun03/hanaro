@@ -3,7 +3,7 @@
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 
-export default function LikeButtons({ postId }: { postId: number;}) {
+export default function LikeButtons({ postId }: { postId: number }) {
 	const { data: session } = useSession();
 	const [likeState, setLikeState] = useState<null | boolean>(null);
 	const [likes, setLikes] = useState<number>(0);
@@ -70,19 +70,21 @@ export default function LikeButtons({ postId }: { postId: number;}) {
 	}, []);
 
 	return (
-		<div className="flex gap-2 mt-2">
-			<button
-				onClick={() => handleVote(true)}
-				className={`px-3 py-1 border rounded ${likeState === true ? 'bg-blue-200 text-white' : ''}`}
-			>
-				👍 좋아요 {likes}
-			</button>
-			<button
-				onClick={() => handleVote(false)}
-				className={`px-3 py-1 border rounded ${likeState === false ? 'bg-red-200 text-white' : ''}`}
-			>
-				👎 싫어요 {dislikes}
-			</button>
+		<div className="flex items-center justify-center w-full mt-6">
+			<div className="flex gap-2 mt-2">
+				<button
+					onClick={() => handleVote(true)}
+					className={`px-3 py-1 border rounded ${likeState === true ? 'bg-blue-200 text-white' : ''}`}
+				>
+					👍 좋아요 {likes}
+				</button>
+				<button
+					onClick={() => handleVote(false)}
+					className={`px-3 py-1 border rounded ${likeState === false ? 'bg-red-200 text-white' : ''}`}
+				>
+					👎 싫어요 {dislikes}
+				</button>
+			</div>
 		</div>
 	);
 }
