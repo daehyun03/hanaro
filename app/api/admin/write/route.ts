@@ -120,6 +120,10 @@ export async function DELETE(request: Request) {
 		);
 	}
 	try {
+		await prisma.post_like.deleteMany({
+			where: { post_id: parseInt(postId, 10) },
+		});
+
 		await prisma.post.delete({
 			where: { post_id: parseInt(postId, 10) },
 		});
