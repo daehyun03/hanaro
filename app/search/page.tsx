@@ -20,7 +20,7 @@ export default function SearchPage() {
 		window.history.back();
 	};
 	return (
-		<div className="max-w-[800px] mx-auto">
+		<div className="max-w-[800px] mx-auto p-4">
 			<div className="flex justify-between items-center mb-6 mt-4">
 				<div></div>
 				<Logo></Logo>

@@ -14,6 +14,7 @@ import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import Pen from '@/asset/pen';
 import Del from '@/asset/del';
+import LikeButtons from '@/components/LikeButtons';
 
 export default function PostPage() {
 	const params = useParams();
@@ -31,7 +32,6 @@ export default function PostPage() {
 				setPost(data);
 			}
 		};
-
 		fetchPost();
 	}, [postId]);
 	const delPost = async () => {
@@ -81,6 +81,7 @@ export default function PostPage() {
 				</CardHeader>
 				<CardContent>
 					<p>{post.text}</p>
+					<LikeButtons postId={Number(postId)} />
 				</CardContent>
 			</Card>
 		</div>

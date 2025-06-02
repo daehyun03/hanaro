@@ -92,7 +92,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 		},
 		session({ session, token }) {
 			session.user.role = token.role;
-			console.log('Session:', session.user);
 			return session;
 		},
 		redirect: async ({ url, baseUrl }) => {

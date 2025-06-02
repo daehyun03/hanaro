@@ -22,12 +22,12 @@ model post {
 }
 
 model post_like {
-  like_id Int  @id @default(autoincrement())
+  like_id Int     @id @default(autoincrement())
   post_id Int
   user_id Int
-  like    Int?
-  post    post @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_post_TO_like_1")
-  user    user @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_like_1")
+  is_like Boolean
+  post    post    @relation(fields: [post_id], references: [post_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_post_TO_like_1")
+  user    user    @relation(fields: [user_id], references: [user_id], onDelete: NoAction, onUpdate: NoAction, map: "FK_user_TO_like_1")
 
   @@index([post_id], map: "FK_post_TO_like_1")
   @@index([user_id], map: "FK_user_TO_like_1")
@@ -49,7 +49,7 @@ model tag {
 model user {
   user_id   Int         @id @default(autoincrement())
   email     String      @unique @db.VarChar(100)
-  nickname  String      @db.VarChar(50)
+  nickname  String      @unique @db.VarChar(50)
   pw        String      @db.VarChar(100)
   role      String      @db.VarChar(20)
   post_like post_like[]
