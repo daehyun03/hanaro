@@ -1,6 +1,11 @@
 import { prisma } from '@/app/utils/prismaClients';
+import { auth } from '@/lib/auth';
 
 export async function POST(request: Request) {
+	const session = await auth();
+	if (session?.user?.role !== 'admin') {
+		return new Response('Unauthorized', { status: 401 });
+	}
 	const body = await request.json();
 	const { title, text, tag } = body;
 
@@ -46,6 +51,10 @@ export async function POST(request: Request) {
 }
 
 export async function PUT(request: Request) {
+	const session = await auth();
+	if (session?.user?.role !== 'admin') {
+		return new Response('Unauthorized', { status: 401 });
+	}
 	const url = new URL(request.url);
 	const postId = url.searchParams.get('postId');
 
@@ -94,6 +103,10 @@ export async function PUT(request: Request) {
 }
 
 export async function DELETE(request: Request) {
+	const session = await auth();
+	if (session?.user?.role !== 'admin') {
+		return new Response('Unauthorized', { status: 401 });
+	}
 	const url = new URL(request.url);
 	const postId = url.searchParams.get('postId');
 

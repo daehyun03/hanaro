@@ -38,7 +38,7 @@ export default function Tags({ checked, setChecked }: TagsProps) {
 							}
 						}}
 					>
-						{tag.name}
+						{tag.name}({tag._count.post})
 					</button>
 				))}
 			</div>

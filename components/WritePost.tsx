@@ -14,6 +14,7 @@ export default function () {
 	const [selectedTag, setSelectedTag] = useState<number>(0);
 	const [title, setTitle] = useState<string>('');
 	const [text, setText] = useState<string>('');
+	const [newTag, setNewTag] = useState<string>('');
 	const { data: session } = useSession();
 	const searchParams = useSearchParams();
 	const postId = searchParams.get('postId');
@@ -21,6 +22,24 @@ export default function () {
 		const res = await fetch('/api/tags');
 		const tag_data = await res.json();
 		setTags(tag_data);
+	};
+	const addTag = async () => {
+		if (!newTag.trim()) {
+			alert('태그 이름을 입력해주세요.');
+			return;
+		}
+		const res = await fetch('/api/tags', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ name: newTag }),
+		});
+		if (res.ok) {
+			alert('태그가 추가되었습니다.');
+			setNewTag('');
+			window.location.reload();
+		} else {
+			alert('태그 추가에 실패했습니다.');
+		}
 	};
 	const onsubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -37,7 +56,7 @@ export default function () {
 		};
 		try {
 			let res: Response;
-			if(postId) {
+			if (postId) {
 				res = await fetch(`/api/admin/write?postId=${postId}`, {
 					method: 'PUT',
 					headers: { 'Content-Type': 'application/json' },
@@ -54,7 +73,7 @@ export default function () {
 			if (!res.ok) {
 				alert('글 등록에 실패했습니다.');
 			} else {
-				if(postId) {
+				if (postId) {
 					alert('글이 수정되었습니다.');
 				} else {
 					alert('글이 작성되었습니다.');
@@ -141,7 +160,22 @@ export default function () {
 										))}
 									</RadioGroup>
 								</div>
-
+								<div className="grid gap-2">
+									<Label className="text-sm font-medium">
+										Add Tag
+									</Label>
+									<div className="flex items-center space-x-2">
+										<input
+											className="border rounded p-2"
+											onChange={(e) =>
+												setNewTag(e.target.value)
+											}
+										/>
+										<Button type="button" onClick={addTag}>
+											Add Tag
+										</Button>
+									</div>
+								</div>
 								<div className="grid gap-2">
 									<label
 										htmlFor="text"

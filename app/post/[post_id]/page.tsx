@@ -71,10 +71,9 @@ export default function PostPage() {
 					</div>
 					<CardDescription>
 						# {post.tag.name}
-						<div>작성일: {printDate(post.time)}</div>
-						{printDate(post.modified_date) !==
-						printDate(post.time) ? (
-							<div>수정일: {printDate(post.modified_date)}</div>
+						<div className="text-right">작성일: {printDate(post.time)}</div>
+						{post.modified_date !== post.time ? (
+							<div className="text-right">수정일: {printDate(post.modified_date)}</div>
 						) : (
 							<></>
 						)}

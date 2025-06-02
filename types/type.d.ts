@@ -3,7 +3,7 @@ import { DateTime } from '@auth/core/providers/kakao';
 export type Tag = {
 	tag_id: number;
 	name: string;
-	cnt: number;
+	_count: {post: number};
 }
 
 export type ShowPost = {

@@ -25,7 +25,7 @@ export default function Home() {
 				</div>
 				<Posts selected={checked} />
 			</div>
-			<div className="w-30">
+			<div className="w-40">
 				<Tags checked={checked} setChecked={setChecked} />
 			</div>
 		</div>
