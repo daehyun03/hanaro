@@ -32,21 +32,6 @@ export default function MyInfo({
 		password: '',
 		passwordConfirm: '',
 	});
-	// const handleUpdateNickname = async () => {
-	// 	const res = await fetch("/api/user/update-nickname", {
-	// 		method: "POST",
-	// 		headers: {
-	// 			"Content-Type": "application/json",
-	// 		},
-	// 		body: JSON.stringify({ nickname: form.nickname }),
-	// 	});
-	//
-	// 	if (res.ok) {
-	// 		console.log(res.body);
-	// 		await signOutWithForm()
-	// 		.then(() => router.push('/'))
-	// 	}
-	// };
 	const handleUpdatePassword = async () => {
 		if (form.password !== form.passwordConfirm) {
 			alert('비밀번호가 일치하지 않습니다.');
@@ -115,6 +100,7 @@ export default function MyInfo({
 									required
 								/>
 							</div>
+							{session?.user?.image ? <></> :
 							<form
 								onSubmit={handleUpdatePassword}
 								className="grid gap-3"
@@ -171,7 +157,7 @@ export default function MyInfo({
 								<Button type="submit" className="w-full">
 									Change Password
 								</Button>
-							</form>
+							</form>}
 						</div>
 					</div>
 
@@ -181,34 +167,3 @@ export default function MyInfo({
 		</div>
 	);
 }
-
-// <form onSubmit={handleUpdateNickname}>
-// 	<div className="grid gap-3">
-// 		<div className="flex items-center">
-// 			<Label htmlFor="password">
-// 				Nickname
-// 			</Label>
-// 		</div>
-// 		<Input
-// 			id="nickname"
-// 			name="nickname"
-// 			type="text"
-// 			required
-// 			onChange={(e) =>
-// 				setForm({
-// 					...form,
-// 					nickname: e.target.value,
-// 				})
-// 			}
-// 			onInput={(e) =>
-// 				setForm({
-// 					...form,
-// 					nickname: e.currentTarget.value,
-// 				})
-// 			}
-// 		/>
-// 	</div>
-// 	<Button type="submit" className="w-full mt-6">
-// 		Change Nickname
-// 	</Button>
-// </form>
