@@ -30,6 +30,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
   - But you can't change if you are signed in with GitHub OAuth
 - if you want to withdraw, you can do it in the user-profile page
 ### Post
+![img.png](asset/write-post.png)
 #### Create Post
 - Create a new post with title, content, and tag
 - if you want to add a tag, you can add it on the post-creation page
@@ -38,8 +39,11 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 #### Delete Post
 - Delete an existing post
 #### View Post
-- View a post with title, content, tag, written date and like & dislike count
+- View a post with title, content, tag, written date and like/dislike count
 - if you want to like or dislike a post, you can do it in the post-view page
-- if exists modified date, it will be shown in the post-view page
-
+- if exists modified date, it will be shown on the post-view page
+### Admin Dashboard
+![img.png](asset/admin.png)
+- You can delete a tag
+- You can look up all users with search
 
