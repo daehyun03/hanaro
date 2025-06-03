@@ -16,35 +16,31 @@ export default function LikeButtons({ postId }: { postId: number }) {
 			return;
 		}
 
-		if (likeState === null && session?.user) {
+		let newLikeState: boolean | null = isLike;
+
+		if (likeState === isLike) {
+			newLikeState = null;
+			if (isLike) {
+				setLikes(likes - 1);
+			} else {
+				setDislikes(dislikes - 1);
+			}
+		} else {
 			if (isLike) {
 				setLikes(likes + 1);
+				if (likeState === false) setDislikes(dislikes - 1);
 			} else {
 				setDislikes(dislikes + 1);
-			}
-		} else if (session?.user) {
-			if (likeState === isLike) {
-				if (isLike) {
-					setLikes(likes - 1);
-				} else {
-					setDislikes(dislikes - 1);
-				}
-			} else {
-				if (isLike) {
-					setLikes(likes + 1);
-					setDislikes(dislikes - 1);
-				} else {
-					setLikes(likes - 1);
-					setDislikes(dislikes + 1);
-				}
+				if (likeState === true) setLikes(likes - 1);
 			}
 		}
-		setLikeState(isLike);
+
+		setLikeState(newLikeState);
 
 		const res = await fetch(`/api/like/${postId}`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
-			body: JSON.stringify({ postId, isLike }),
+			body: JSON.stringify({ postId, isLike: newLikeState }),
 		});
 
 		if (!res.ok) {
@@ -74,15 +70,15 @@ export default function LikeButtons({ postId }: { postId: number }) {
 			<div className="flex gap-2 mt-2">
 				<button
 					onClick={() => handleVote(true)}
-					className={`px-3 py-1 border rounded ${likeState === true ? 'bg-blue-200 text-white' : ''}`}
+					className={`px-3 py-1 border rounded ${likeState === true ? 'bg-blue-200' : ''}`}
 				>
-					👍 좋아요 {likes}
+					👍 Like {likes}
 				</button>
 				<button
 					onClick={() => handleVote(false)}
-					className={`px-3 py-1 border rounded ${likeState === false ? 'bg-red-200 text-white' : ''}`}
+					className={`px-3 py-1 border rounded ${likeState === false ? 'bg-red-200' : ''}`}
 				>
-					👎 싫어요 {dislikes}
+					👎 DisLike {dislikes}
 				</button>
 			</div>
 		</div>

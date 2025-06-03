@@ -50,6 +50,7 @@ export async function POST(req: Request) {
 	if (!session?.user?.name) {
 		return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 	}
+
 	const userId = await prisma.user.findFirst({
 		where: { nickname: session.user.name },
 		select: { user_id: true },
@@ -57,12 +58,13 @@ export async function POST(req: Request) {
 	if (!userId) {
 		return NextResponse.json({ error: 'User not found' }, { status: 404 });
 	}
+
 	const { postId, isLike } = await req.json();
 
 	try {
 		const existing = await prisma.post_like.findFirst({
 			where: {
-				AND: [{ user_id: userId?.user_id }, { post_id: postId }],
+				AND: [{ user_id: userId.user_id }, { post_id: postId }],
 			},
 			select: {
 				like_id: true,
@@ -70,27 +72,37 @@ export async function POST(req: Request) {
 		});
 
 		if (existing) {
-			await prisma.post_like.update({
-				where: {
-					like_id: existing.like_id,
-				},
-				data: { is_like: Boolean(isLike) },
-			});
+			if (isLike === null) {
+				await prisma.post_like.delete({
+					where: {
+						like_id: existing.like_id,
+					},
+				});
+			} else {
+				await prisma.post_like.update({
+					where: {
+						like_id: existing.like_id,
+					},
+					data: { is_like: Boolean(isLike) },
+				});
+			}
 		} else {
-			await prisma.post_like.create({
-				data: {
-					post_id: postId,
-					user_id: userId.user_id,
-					is_like: Boolean(isLike),
-				},
-			});
+			if (isLike !== null) {
+				await prisma.post_like.create({
+					data: {
+						post_id: postId,
+						user_id: userId.user_id,
+						is_like: Boolean(isLike),
+					},
+				});
+			}
 		}
 
 		return NextResponse.json({ success: true });
 	} catch (e) {
 		return NextResponse.json(
 			{ error: 'Failed to update like' },
-			{ status: 500 },
+			{ status: 500 }
 		);
 	}
 }
