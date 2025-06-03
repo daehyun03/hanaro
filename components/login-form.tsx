@@ -88,14 +88,6 @@ export function LoginForm({
 										type="password"
 										required
 									/>
-									<div className="flex items-center">
-										<a
-											href="#"
-											className="ml-auto text-sm underline-offset-4 hover:underline"
-										>
-											Forgot your password?
-										</a>
-									</div>
 								</div>
 								<Button type="submit" className="w-full">
 									Login
