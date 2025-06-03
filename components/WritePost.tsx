@@ -197,7 +197,7 @@ export default function () {
 								</div>
 							</div>
 							<Button type="submit" className="mt-4">
-								글 쓰기
+								Write Post
 							</Button>
 						</div>
 					</form>
