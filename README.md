@@ -42,6 +42,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - View a post with title, content, tag, written date and like/dislike count
 - if you want to like or dislike a post, you can do it in the post-view page
 - if exists modified date, it will be shown on the post-view page
+### Search Post
+![img.png](asset/search.png)
+- Search posts by title, content
 ### Admin Dashboard
 ![img.png](asset/admin.png)
 - You can delete a tag
